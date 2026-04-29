@@ -16,7 +16,7 @@ const axios = require('axios'); // Install with: npm install axios
 
   // Send data to your Postman endpoint
   try {
-    await axios.post('https://5a609982-8e16-40f4-9240-6b3754ca64af.mock.pstmn.io', {
+    await axios.post('https://5a609982-8e16-40f4-9240-6b3754ca64af.mock.pstmn.io/news-alert', {
       source: 'BBC News',
       timestamp: new Date().toISOString(),
       headlines: headlines.slice(0, 10) // Sending top 10 for testing
