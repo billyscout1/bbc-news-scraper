@@ -8,11 +8,17 @@ const axios = require('axios'); // Install with: npm install axios
   await page.goto('https://www.bbc.com/news');
   
   // Scrape headlines (BBC often uses h3 or data-testid="card-headline")
-  const headlines = await page.$$eval('h3', elements => 
-    elements.map(el => el.innerText.trim()).filter(text => text.length > 0)
+  // More robust selector to catch BBC headlines
+  const headlines = await page.$$eval('h3, [data-testid="card-headline"]', elements => 
+    elements
+      .map(el => el.innerText.trim())
+      .filter(text => text.length > 5) // Ignore tiny snippets/menu items
   );
 
-  console.log(`Found ${headlines.length} headlines. Sending to Postman...`);
+  // Remove duplicates (BBC often repeats headlines in different sections)
+  const uniqueHeadlines = [...new Set(headlines)];
+
+  console.log(`Found ${uniqueHeadlines.length} unique headlines.`);
 
   // Send data to your Postman endpoint
   try {
